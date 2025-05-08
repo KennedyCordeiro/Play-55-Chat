@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900");
+    font-family: "Rubik", sans-serif;
+
+    --Purple-600: hsl(238, 40%, 52%);
+    --Pink-400: hsl(358, 79%, 66%);
+    --Purple-200: hsl(239, 57%, 85%);
+    --Pink-200: hsl(357, 100%, 86%);
+    --Grey-800: hsl(212, 24%, 26%);
+    --Grey-500: hsl(211, 10%, 45%);
+    --Grey-100: hsl(223, 19%, 93%);
+    --Grey-50: hsl(228, 33%, 97%);
+    --White: hsl(0, 100%, 100%);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+
+  .textarea {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y;
+  }
+}

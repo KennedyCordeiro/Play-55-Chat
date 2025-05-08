@@ -76,12 +76,13 @@ const handleLogout = async () => {
 }
 
 .btn-contact {
-  background-color: #007bff;
+  background-color: var(--Purple-600);
+
   color: white;
 }
 
 .btn-contact:hover {
-  background-color: #0056b3;
+  background-color: var(--Purple-500);
 }
 
 .btn-logout {

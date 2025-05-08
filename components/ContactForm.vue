@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useForm } from "vee-validate";
+import { Field, ErrorMessage } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as zod from "zod";
-import { useRecaptcha } from "vue-recaptcha-v3";
+import { useReCaptcha } from "vue-recaptcha-v3";
 
 const emit = defineEmits(["close"]);
 
-const { executeRecaptcha, recaptchaLoaded } = useRecaptcha();
+const reCaptcha = useReCaptcha();
 
 const schema = toTypedSchema(
   zod.object({
@@ -17,28 +18,42 @@ const schema = toTypedSchema(
   })
 );
 
-const { handleSubmit, isSubmitting } = useForm({
+const { handleSubmit, isSubmitting, values } = useForm({
   validationSchema: schema,
+  initialValues: {
+    nome: "",
+    email: "",
+    telefone: "",
+    dataNascimento: "",
+  },
 });
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await recaptchaLoaded();
-    const token = await executeRecaptcha("form_submit");
+    if (reCaptcha) {
+      await reCaptcha.recaptchaLoaded();
+      const token = await reCaptcha.executeRecaptcha("form_submit");
 
-    const response = await $fetch("https://api.example.com/contact", {
-      method: "POST",
-      body: {
-        ...values,
-        token,
-      },
-    });
+      console.log("reCAPTCHA token:", token);
 
-    alert("Mensagem enviada com sucesso!");
-    emit("close");
+      const response = await $fetch("<>", {
+        method: "POST",
+        body: {
+          ...values,
+          token,
+        },
+      });
+
+      alert("Mensagem enviada com sucesso!");
+      emit("close");
+    } else {
+      throw new Error("reCAPTCHA não está disponível");
+    }
   } catch (error) {
     console.error("Error submitting form:", error);
-    alert("Ocorreu um erro ao enviar o formulário");
+    alert(
+      "Ocorreu um erro ao enviar o formulário, o ADM não informou o dominio de envio :)"
+    );
   }
 });
 </script>
@@ -118,11 +133,29 @@ const onSubmit = handleSubmit(async (values) => {
           <ErrorMessage name="dataNascimento" class="text-red-500 text-sm" />
         </div>
 
+        <div class="text-xs text-gray-500 mt-2">
+          Este site é protegido por reCAPTCHA e a
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            class="text-blue-500"
+            >Política de Privacidade</a
+          >
+          e
+          <a
+            href="https://policies.google.com/terms"
+            target="_blank"
+            class="text-blue-500"
+            >Termos de Serviço</a
+          >
+          do Google se aplicam.
+        </div>
+
         <div>
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50">
+            class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50">
             {{ isSubmitting ? "Enviando..." : "Enviar" }}
           </button>
         </div>
@@ -135,5 +168,6 @@ const onSubmit = handleSubmit(async (values) => {
 .title {
   font-size: 1.5rem !important;
   font-weight: 600 !important;
+  color: var(--Purple-600);
 }
 </style>

@@ -143,6 +143,7 @@ const formatDate = (dateString: string) => {
       </button>
 
       <button
+        v-if="!isCurrentUser"
         style="color: var(--Grey-500)"
         @click="$emit('reply', message)"
         class="flex items-center hover:text-blue-500">

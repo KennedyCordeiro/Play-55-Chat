@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="container">
-      <h1 class="logo">Play55 Chat</h1>
+      <img src="/public/img/play-white.svg" class="logo" />
       <div class="actions">
         <button class="btn-contact" @click="openContactModal">
           Fale conosco
@@ -54,7 +54,7 @@ const handleLogout = async () => {
 }
 
 .logo {
-  font-size: 1.5rem;
+  width: 7.5rem;
   font-weight: bold;
   color: #333;
 }

@@ -372,6 +372,10 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+
+  &:focus {
+    outline: 1px solid var(--Grey-500);
+  }
 }
 
 .form-textarea {
@@ -382,17 +386,17 @@ onMounted(() => {
 .submit-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #007bff;
+  background-color: var(--Purple-600);
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .submit-button:hover {
-  background-color: #0056b3;
+  background-color: var(--Purple-500);
 }
 
 .reply-preview {

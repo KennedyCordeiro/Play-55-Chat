@@ -30,19 +30,11 @@ export const useAuth = () => {
       loading.value = true;
       error.value = null;
 
-      // Deslogar do Firebase
       await auth.signOut();
 
-      // Limpar o estado local
       user.value = null;
 
-      // Limpar cookies e armazenamento relacionados ao Google/Firebase
-      // Isso ajuda a evitar problemas com o cache da sessão
       if (typeof window !== "undefined") {
-        // Opcional: redirecionar para a página de login do Google para limpar sessões
-        // window.open('https://accounts.google.com/logout', '_blank');
-
-        // Limpar localStorage e sessionStorage do navegador
         localStorage.removeItem("firebase:previous_websocket_failure");
         sessionStorage.clear();
       }

@@ -18,6 +18,8 @@ const isContactModalOpen = ref(false);
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap");
+
 html,
 body {
   margin: 0;
@@ -30,6 +32,4 @@ body {
 * {
   box-sizing: border-box;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap");
 </style>

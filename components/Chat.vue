@@ -24,12 +24,31 @@
           :currentUserId="user?.uid"
           @like="handleLike(message)"
           @edit="handleEdit(message)"
-          @delete="handleDelete(message)">
+          @delete="handleDelete(message)"
+          @reply="handleReply(message)">
           {{ message.conteudo }}
         </ChatMessage>
       </div>
 
       <form class="chat__form" @submit.prevent="handleSubmit">
+        <div
+          v-if="replyingTo"
+          class="reply-preview p-3 bg-gray-100 rounded mb-3 relative">
+          <button
+            @click="cancelReply"
+            class="absolute top-2 right-2 text-gray-500 hover:text-red-500">
+            &times;
+          </button>
+          <p class="text-sm text-gray-600 mb-1">
+            Respondendo para
+            <span class="font-bold">{{ replyingTo.nomeRemetente }}</span
+            >:
+          </p>
+          <p class="text-sm text-gray-700 truncate">
+            {{ replyingTo.conteudo }}
+          </p>
+        </div>
+
         <div class="form-group">
           <label class="checkbox-label">
             <input
@@ -63,7 +82,9 @@
             class="form-textarea"></textarea>
         </div>
 
-        <button type="submit" class="submit-button">Enviar mensagem</button>
+        <button type="submit" class="submit-button">
+          {{ replyingTo ? "Enviar resposta" : "Enviar mensagem" }}
+        </button>
       </form>
     </template>
   </div>
@@ -82,9 +103,15 @@ interface IMensagem {
   mensagemPropria: boolean;
   conteudo: string;
   userId?: string;
+  photoURL?: string;
   acoes?: {
     editar?: boolean;
     excluir?: boolean;
+  };
+  replyTo?: {
+    id: string;
+    nomeRemetente: string;
+    conteudo: string;
   };
 }
 
@@ -93,6 +120,7 @@ const messages = ref<IMensagem[]>([]);
 const currentFilter = ref("recent");
 const isOtherPerson = ref(false);
 const messagesContainer = ref<HTMLElement | null>(null);
+const replyingTo = ref<IMensagem | null>(null);
 
 const form = ref({
   nomeRemetente: "",
@@ -139,17 +167,30 @@ const handleSubmit = () => {
     mensagemPropria: !isOtherPerson.value,
     conteudo: form.value.conteudo,
     userId: user.value.uid,
+    photoURL: user.value.photoURL || "",
     acoes: {
       editar: !isOtherPerson.value,
       excluir: !isOtherPerson.value,
     },
   };
 
+  // Adicionar dados da resposta, se estiver respondendo a uma mensagem
+  if (replyingTo.value) {
+    newMessage.replyTo = {
+      id: replyingTo.value.id,
+      nomeRemetente: replyingTo.value.nomeRemetente,
+      conteudo: replyingTo.value.conteudo,
+    };
+  }
+
   messages.value.push(newMessage);
   saveMessages();
+
+  // Limpar o formulário
   form.value.conteudo = "";
   form.value.nomeRemetente = "";
   isOtherPerson.value = false;
+  replyingTo.value = null;
 
   nextTick(() => {
     if (messagesContainer.value) {
@@ -180,6 +221,23 @@ const handleDelete = (message: IMensagem) => {
     messages.value = messages.value.filter((m) => m.id !== message.id);
     saveMessages();
   }
+};
+
+const handleReply = (message: IMensagem) => {
+  replyingTo.value = message;
+  // Focar no textarea após definir a mensagem a ser respondida
+  nextTick(() => {
+    const textarea = document.querySelector(
+      ".form-textarea"
+    ) as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.focus();
+    }
+  });
+};
+
+const cancelReply = () => {
+  replyingTo.value = null;
 };
 
 const saveMessages = () => {
@@ -240,10 +298,16 @@ onMounted(() => {
 }
 
 .chat__filters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .filter-button {
@@ -252,16 +316,16 @@ onMounted(() => {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 .filter-button:hover {
-  background-color: #0261c7;
+  background-color: var(--Purple-500);
   color: var(--White);
 }
 
 .filter-button--active {
-  background-color: #007bff;
+  background-color: var(--Purple-600);
   color: white;
   border-color: #007bff;
 }
@@ -329,6 +393,10 @@ onMounted(() => {
 
 .submit-button:hover {
   background-color: #0056b3;
+}
+
+.reply-preview {
+  border-left: 3px solid var(--Purple-200);
 }
 
 @media (max-width: 768px) {

@@ -17,6 +17,12 @@ interface IMensagem {
     editar?: boolean;
     excluir?: boolean;
   };
+
+  replyTo?: {
+    id: string;
+    nomeRemetente: string;
+    conteudo: string;
+  };
 }
 const { user } = useAuth();
 
@@ -25,7 +31,7 @@ const props = defineProps<{
   currentUserId?: string;
 }>();
 
-const emit = defineEmits(["like", "edit", "delete"]);
+const emit = defineEmits(["like", "edit", "delete", "reply"]);
 
 const isLiked = ref(false);
 
@@ -67,6 +73,18 @@ const formatDate = (dateString: string) => {
     style="border-color: var(--Purple-600)"
     class="bg-white card shadow p-4"
     :class="{ 'border-l-4 ': isCurrentUser }">
+    <!-- Informações da resposta caso exista -->
+    <div v-if="message.replyTo" class="reply-info mb-3 p-2 bg-gray-100 rounded">
+      <p class="text-xs text-gray-600">
+        Resposta para
+        <span class="font-bold">{{ message.replyTo.nomeRemetente }}</span
+        >:
+      </p>
+      <p class="text-sm text-gray-700 truncate">
+        {{ message.replyTo.conteudo }}
+      </p>
+    </div>
+
     <div class="flex justify-between items-start mb-2">
       <div class="flex items-start gap-3">
         <div class="avatar">
@@ -105,7 +123,7 @@ const formatDate = (dateString: string) => {
 
     <p class="mb-3">{{ message.conteudo }}</p>
 
-    <div class="flex items-center">
+    <div class="flex items-center gap-3">
       <button
         @click="$emit('like', message.id)"
         class="flex items-center text-gray-500 hover:text-red-500">
@@ -114,7 +132,7 @@ const formatDate = (dateString: string) => {
           class="h-5 w-5 mr-1"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="currentColor">
+          stroke="var(--Purple-600)">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -122,6 +140,25 @@ const formatDate = (dateString: string) => {
             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
         {{ message.curtidas }}
+      </button>
+
+      <button
+        style="color: var(--Grey-500)"
+        @click="$emit('reply', message)"
+        class="flex items-center hover:text-blue-500">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--Grey-500)">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+        </svg>
+        Responder
       </button>
     </div>
   </div>
@@ -262,6 +299,10 @@ const formatDate = (dateString: string) => {
 
 .message__delete-button:hover {
   background-color: rgba(244, 67, 54, 0.1);
+}
+
+.reply-info {
+  border-left: 3px solid var(--Purple-200);
 }
 
 @media (max-width: 768px) {

@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       FIREBASE_MEASUREMENT_ID: process.env.NUXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     },
   },
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css", "~/assets/css/fonts.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -32,6 +32,21 @@ export default defineNuxtConfig({
         {
           name: "description",
           content: "Chat em tempo real com autenticação do Google",
+        },
+      ],
+      link: [
+        {
+          rel: "preconnect",
+          href: "https://fonts.googleapis.com",
+        },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossorigin: "",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap",
         },
       ],
     },

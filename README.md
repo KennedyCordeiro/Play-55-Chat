@@ -9,7 +9,7 @@
 </div>
 
 <p align="center">
-  <img src="https://i.imgur.com/YourImageHere.png" alt="Play55 Chat Preview" width="600" />
+  <img src="'/public/img/play-white" alt="Play55 Chat Preview" width="600" />
 </p>
 
 ## ✨ Funcionalidades

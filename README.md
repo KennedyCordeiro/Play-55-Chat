@@ -9,7 +9,7 @@
 </div>
 
 <p align="center">
-  <img src="'/public/img/play-white" alt="Play55 Chat Preview" width="600" />
+<!--   <img src="'/public/img/play-white" alt="Play55 Chat Preview" width="600" /> -->
 </p>
 
 ## ✨ Funcionalidades
@@ -136,6 +136,6 @@ Desenvolvido como parte do desafio técnico para a Play55.
 
 <p align="center">
   <a href="https://play55.com.br">
-    <img src="https://i.imgur.com/YourLogoHere.png](https://www.notion.so/image/attachment%3Ad04a2958-dd65-40d0-b248-39f6b1c177b2%3Aplay-white.svg?table=block&id=1e7b8ca5-3b84-8093-b8e2-d71acc5c0bf0&spaceId=b99ad709-9e97-4f21-8553-ebabea3a4bcf&userId=273598fc-0e30-4032-9267-4e06b0c4791f" alt="Play55 Logo" width="150" />
-  </a>
+<!--     <img src="https://i.imgur.com/YourLogoHere.png](https://www.notion.so/image/attachment%3Ad04a2958-dd65-40d0-b248-39f6b1c177b2%3Aplay-white.svg?table=block&id=1e7b8ca5-3b84-8093-b8e2-d71acc5c0bf0&spaceId=b99ad709-9e97-4f21-8553-ebabea3a4bcf&userId=273598fc-0e30-4032-9267-4e06b0c4791f" alt="Play55 Logo" width="150" />
+  </a> -->
 </p>
